@@ -7,8 +7,12 @@ const args_array = process.argv.splice(2);
 const command_type = args_array[0];
 const arg_value = args_array[1];
 
-// create a json file if not already present
 const file_path = "./task-data.json"
+
+// create a json file if not already present
+if (!fs.existsSync(file_path)) {
+    fs.writeFileSync(file_path, JSON.stringify([]));
+}
 
 
 switch(command_type){
