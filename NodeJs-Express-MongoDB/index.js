@@ -14,6 +14,15 @@ if (!fs.existsSync(file_path)) {
     fs.writeFileSync(file_path, JSON.stringify([]));
 }
 
+const getNextId = (tasks) => {
+    if (tasks.length === 0) return 1;
+
+    const maxId = tasks.reduce((max, task) => {
+        return task.id > max ? task.id : max;
+    }, 0);
+
+    return maxId + 1;
+};
 
 switch(command_type){
     case "add":
@@ -22,7 +31,7 @@ switch(command_type){
             if(err) throw err; 
             let tasks = JSON.parse(data);
             
-            const task = {"title": arg_value, "complete": false}
+            const task = {"id": getNextId(tasks), "title": arg_value, "complete": false}
             tasks.push(task);
 
             fs.writeFile(file_path, JSON.stringify(tasks), function(){
@@ -38,7 +47,7 @@ switch(command_type){
             let tasks = JSON.parse(data);
 
             tasks.forEach(task => {
-                console.log(`title: ${task.title}, complete: ${task.complete}`);
+                console.log(`id: ${task.id}, title: ${task.title}, complete: ${task.complete}`);
             });
         })
         break;
@@ -49,7 +58,7 @@ switch(command_type){
             if(err) throw err;
             
             let tasks = JSON.parse(data);
-            let task = tasks.find(task => task.title === arg_value);
+            let task = tasks.find(task => task.id == arg_value);
             task.complete = true;
 
             fs.writeFile(file_path, JSON.stringify(tasks), function(){
@@ -65,7 +74,7 @@ switch(command_type){
             if(err) throw err;
             let tasks = JSON.parse(data);
 
-            const index = tasks.findIndex(task => task.title === arg_value);
+            const index = tasks.findIndex(task => task.id == arg_value);
             if (index !== -1) {
                 tasks.splice(index, 1);
             }
