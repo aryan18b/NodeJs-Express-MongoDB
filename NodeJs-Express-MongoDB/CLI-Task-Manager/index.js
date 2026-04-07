@@ -1,8 +1,7 @@
 const fs = require('node:fs');
 
 // get the arguments
-const args_array = process.argv.splice(2);
-// console.log(args_array);
+const args_array = process.argv.slice(2);
 
 const command_type = args_array[0];
 const arg_value = args_array[1];
@@ -29,13 +28,18 @@ switch(command_type){
         // add to json file
         fs.readFile(file_path, function(err, data){
             if(err) throw err; 
+
+            if(!arg_value){
+                console.log("Please provide task title");
+                return;
+            }
+
             let tasks = JSON.parse(data);
-            
             const task = {"id": getNextId(tasks), "title": arg_value, "complete": false}
             tasks.push(task);
 
             fs.writeFile(file_path, JSON.stringify(tasks), function(){
-                console.log('File modified successfully!');
+                console.log('Task added!');
             });
         });
         break;
@@ -57,12 +61,24 @@ switch(command_type){
         fs.readFile(file_path, 'utf-8', function(err, data){
             if(err) throw err;
             
+            if(!arg_value){
+                console.log("Please provide task id");
+                return;
+            }
+
+            const id = Number(arg_value);
             let tasks = JSON.parse(data);
-            let task = tasks.find(task => task.id == arg_value);
+            let task = tasks.find(task => task.id === id);
+
+            if(!task) {
+                console.log("Task not found");
+                return;
+            }
+
             task.complete = true;
 
             fs.writeFile(file_path, JSON.stringify(tasks), function(){
-                console.log('File modified successfully!');
+                console.log('Task completed');
             });
         })
 
@@ -72,20 +88,32 @@ switch(command_type){
         // delete the task object
         fs.readFile(file_path, 'utf-8', function(err, data){
             if(err) throw err;
-            let tasks = JSON.parse(data);
 
-            const index = tasks.findIndex(task => task.id == arg_value);
-            if (index !== -1) {
-                tasks.splice(index, 1);
+            if(!arg_value){
+                console.log("Please provide task id");
+                return;
             }
 
+            const id = Number(arg_value);
+            let tasks = JSON.parse(data);
+
+            const index = tasks.findIndex(task => task.id === id);
+            
+            if (index === -1) {
+                console.log("Task not found");
+                return;
+            }
+            
+            tasks.splice(index, 1);
+
             fs.writeFile(file_path, JSON.stringify(tasks), function(){
-                console.log('File modified successfully!');
+                console.log('Task deleted!');
             });
         })
 
         break;
 
     default: 
+        
         break;
 }
