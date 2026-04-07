@@ -6,7 +6,7 @@ exports.getAllBooks = () => {
 
 exports.getBookById = (id) => {
     const book = BOOKS.find(book => book.id === id);
-    return book || null;
+    return book;
 };
 
 exports.addBook = (data) => {
@@ -15,8 +15,8 @@ exports.addBook = (data) => {
     }, 0);
 
     const id = maxId + 1;
+    
     const newBook = { id, title: data.title, author: data.author };
-
     BOOKS.push(newBook);
 
     return newBook;
