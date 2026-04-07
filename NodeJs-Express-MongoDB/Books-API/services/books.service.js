@@ -9,13 +9,13 @@ exports.getBookById = (id) => {
     return book || null;
 };
 
-exports.addBook = (title, author) => {
+exports.addBook = (data) => {
     const maxId = BOOKS.reduce((max, book) => {
         return book.id > max ? book.id : max;
     }, 0);
 
     const id = maxId + 1;
-    const newBook = { id, title, author };
+    const newBook = { id, title: data.title, author: data.author };
 
     BOOKS.push(newBook);
 
@@ -30,3 +30,13 @@ exports.deleteBook = (id) => {
     BOOKS.splice(index, 1);
     return true;
 };
+
+exports.updateBook = (id, newBook) => {
+    const indexToUpdate = BOOKS.findIndex(book => book.id === id);
+    if(indexToUpdate < 0) return null;
+    
+    const updatedBook = {id, ...newBook};
+    BOOKS[indexToUpdate] = updatedBook;
+    
+    return updatedBook;
+}

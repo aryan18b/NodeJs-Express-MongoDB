@@ -10,4 +10,6 @@ router.post('/', controller.addBook)
 
 router.delete('/:id', controller.deleteBook)
 
+router.put('/:id', controller.updateBook)
+
 module.exports = router;

@@ -16,13 +16,13 @@ exports.getBookById = function (req, res) {
 }
 
 exports.addBook = function (req, res) {
-    const { title, author } = req.body;
-    if (!title) return res.status(400).json({ error: "title cannot be empty" });
-    if (!author) return res.status(400).json({ error: "author cannot be empty" });
+    const data = req.body;
+    if (!data.title) return res.status(400).json({ error: "title cannot be empty" });
+    if (!data.author) return res.status(400).json({ error: "author cannot be empty" });
 
-    const book = bookService.addBook(title, author);
+    const book = bookService.addBook(data);
 
-    return res.status(201).json({ message: "book created", id: book.id })
+    return res.status(201).json({ message: "book created", data: book })
 }
 
 exports.deleteBook = function (req, res) {
@@ -31,9 +31,21 @@ exports.deleteBook = function (req, res) {
 
     const deleted = bookService.deleteBook(id);
 
-    if(!deleted){
-        return res.status(404).json({ error: `book with id: ${id} not found` });
-    }
+    if(!deleted) return res.status(404).json({ error: `book with id: ${id} not found` });    
 
     return res.status(201).json({ message: 'book deleted' });
+}
+
+exports.updateBook = function (req, res) {
+    const book = req.body;
+    if (!book.title) return res.status(400).json({ error: "title cannot be empty" });
+    if (!book.author) return res.status(400).json({ error: "author cannot be empty" });
+
+    const id = Number(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ error: `id is not valid` });
+
+    const updatedBook = bookService.updateBook(id, book);
+    if(!updatedBook) return res.status(404).json({ error: `book with id: ${id} not found` });    
+
+    return res.status(200).json({ message: "book updated", data: updatedBook })
 }
