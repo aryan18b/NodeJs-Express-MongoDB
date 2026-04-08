@@ -1,3 +1,6 @@
+const Book = require('../models/book.model')
+
+/* In-Memory Service functions
 const { BOOKS } = require('../models/books');
 
 exports.getAllBooks = () => {
@@ -39,4 +42,33 @@ exports.updateBook = (id, newBook) => {
     BOOKS[indexToUpdate] = updatedBook;
     
     return updatedBook;
+}
+*/
+
+exports.getAllBooksAsync = async () => {
+    return await Book.find();
+};
+
+exports.getBookByIdAsync = async (id) => {
+    return await Book.findById(id);
+};
+
+exports.addBookAsync = async (data) => {
+    const newBook = new Book({
+        title: data.title,
+        author: data.author
+    });
+
+    const result = await Book.create(newBook);
+    console.log(result);
+    
+    return result;
+};
+
+exports.deleteBookAsync = async (id) => {
+    return await Book.deleteOne({_id: id});
+};
+
+exports.updateBookAsync = async (id, data) => {
+    return await Book.findByIdAndUpdate(id, {title: data.title, author: data.author});
 }
