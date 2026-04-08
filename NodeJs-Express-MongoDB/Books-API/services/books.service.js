@@ -46,11 +46,11 @@ exports.updateBook = (id, newBook) => {
 */
 
 exports.getAllBooksAsync = async () => {
-    return await Book.find();
+    return await Book.find().populate('author');
 };
 
 exports.getBookByIdAsync = async (id) => {
-    return await Book.findById(id);
+    return await Book.findById(id).populate('author');;
 };
 
 exports.addBookAsync = async (data) => {
@@ -59,9 +59,7 @@ exports.addBookAsync = async (data) => {
         author: data.author
     });
 
-    const result = await Book.create(newBook);
-    console.log(result);
-    
+    const result = await Book.create(newBook);    
     return result;
 };
 
