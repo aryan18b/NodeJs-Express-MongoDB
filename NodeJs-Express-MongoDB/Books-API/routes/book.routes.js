@@ -7,14 +7,14 @@ const router = express.Router();
 // Router-level Middleware
 router.use('/:id', validateId);
 
-router.get('/', controller.getAllBooks)
+router.get('/', controller.getAllBooksAsync)
 
-router.get('/:id', controller.getBookById)
+router.get('/:id', controller.getBookByIdAsync)
 
-router.post('/', validateBody, controller.addBook)
+router.post('/', validateBody, controller.addBookAsync)
 
-router.delete('/:id', controller.deleteBook)
+router.delete('/:id', controller.deleteBookAsync)
 
-router.put('/:id', validateBody, controller.updateBook)
+router.put('/:id', validateBody, controller.updateBookAsync)
 
 module.exports = router;

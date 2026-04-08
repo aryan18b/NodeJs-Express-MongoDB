@@ -1,6 +1,8 @@
+const mongoose = require('mongoose');
+
 exports.validateId = function (req, res, next) {
-    const id = Number(req.params.id);
-    if (isNaN(id)) return next({ message: `id is not valid`, statusCode: 400 });
+    const id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id)) return next({ message: `id is not valid`, statusCode: 400 });
     req.validated = { id };
     next();
 }
