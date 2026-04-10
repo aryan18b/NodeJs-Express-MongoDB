@@ -1,5 +1,5 @@
-const Author = require('../models/author.model')
+import Author from '../models/author.model.js'
 
-exports.getAllAuthors = async () =>{
+export const getAllAuthors = async () =>{
     return await Author.find();
 }

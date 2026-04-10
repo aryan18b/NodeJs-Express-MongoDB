@@ -1,6 +1,6 @@
-const authorService = require('../services/author.service');
+import * as authorService from '../services/author.service.js'
 
-exports.getAllAuthorsAsync = async (req, res, next) => {
+export const getAllAuthorsAsync = async (req, res, next) => {
     try {
         const authors = await authorService.getAllAuthors();
         return res.json(authors);

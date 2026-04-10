@@ -1,10 +1,10 @@
-const express = require('express')
-require('dotenv/config')
-const { connectMongoDB } = require('./connection');
-const bookRouter = require('./routes/book.routes')
-const authorRouter = require('./routes/author.routes')
-const { loggerMiddleware } = require('./middlewares/logger')
-const { errorHandler } = require('./middlewares/errorHandler')
+import express from 'express';
+import 'dotenv/config'
+import { connectMongoDB } from './connection.js';
+import bookRouter from './routes/book.routes.js'
+import authorRouter from './routes/author.routes.js'
+import { loggerMiddleware } from './middlewares/logger.js'
+import { errorHandler } from './middlewares/errorHandler.js'
 const PORT = 8000;
 const app = express();
 

@@ -1,6 +1,6 @@
-const express = require('express')
-const controller = require('../controllers/book.controller');
-const { validateId, validateBody } = require('../middlewares/validation')
+import express from 'express';
+import * as controller from '../controllers/book.controller.js'
+import { validateId, validateBody } from '../middlewares/validation.js'
 
 const router = express.Router();
 
@@ -17,4 +17,4 @@ router.delete('/:id', controller.deleteBookAsync)
 
 router.put('/:id', validateBody, controller.updateBookAsync)
 
-module.exports = router;
+export default router;

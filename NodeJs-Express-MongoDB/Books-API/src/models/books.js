@@ -1,1 +1,1 @@
-exports.BOOKS = [];
+export const BOOKS = [];

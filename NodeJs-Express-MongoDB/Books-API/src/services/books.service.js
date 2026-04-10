@@ -1,4 +1,4 @@
-const Book = require('../models/book.model')
+import Book from '../models/book.model.js'
 
 /* In-Memory Service functions
 const { BOOKS } = require('../models/books');
@@ -45,15 +45,15 @@ exports.updateBook = (id, newBook) => {
 }
 */
 
-exports.getAllBooksAsync = async () => {
+export const getAllBooksAsync = async () => {
     return await Book.find().populate('author');
 };
 
-exports.getBookByIdAsync = async (id) => {
+export const getBookByIdAsync = async (id) => {
     return await Book.findById(id).populate('author');;
 };
 
-exports.addBookAsync = async (data) => {
+export const addBookAsync = async (data) => {
     const newBook = new Book({
         title: data.title,
         author: data.author
@@ -63,10 +63,10 @@ exports.addBookAsync = async (data) => {
     return result;
 };
 
-exports.deleteBookAsync = async (id) => {
+export const deleteBookAsync = async (id) => {
     return await Book.deleteOne({_id: id});
 };
 
-exports.updateBookAsync = async (id, data) => {
+export const updateBookAsync = async (id, data) => {
     return await Book.findByIdAndUpdate(id, {title: data.title, author: data.author});
 }

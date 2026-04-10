@@ -2,8 +2,9 @@
   "name": "books-api",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "node --watch ./src/index.ts",
+    "start": "node --watch ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Aryan B.",
@@ -14,7 +15,10 @@
     "mongoose": "^9.4.1"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/mongoose": "^5.11.96",
     "@types/node": "^25.5.2",
+    "@types/typescript": "^0.4.29",
     "dotenv": "^17.4.1",
     "typescript": "^6.0.2"
   }

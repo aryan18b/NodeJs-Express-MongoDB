@@ -1,8 +1,8 @@
-const express = require('express');
-const controller = require('../controllers/author.controller');
+import express from 'express';
+import * as controller from '../controllers/author.controller.js'
 
 const router = express.Router();
 
 router.get('/', controller.getAllAuthorsAsync);
 
-module.exports = router;
+export default router;
