@@ -1,6 +1,8 @@
 import * as bookService from '../services/books.service.js'
+import {type RequestHandler } from 'express';
+import {type IBook } from '../models/book.model.js';
 
-export const getAllBooksAsync = async function (req, res, next) {
+export const getAllBooksAsync : RequestHandler = async function (req, res, next) {
     try {
         const books = await bookService.getAllBooksAsync();
         return res.json(books);
@@ -9,7 +11,7 @@ export const getAllBooksAsync = async function (req, res, next) {
     }
 }
 
-export const getBookByIdAsync = async function (req, res, next) {
+export const getBookByIdAsync : RequestHandler<{id: string}> = async function (req, res, next) {
     try {
         const id = req.params.id;
         const book = await bookService.getBookByIdAsync(id);
@@ -22,7 +24,7 @@ export const getBookByIdAsync = async function (req, res, next) {
     }
 }
 
-export const addBookAsync = async function (req, res, next) {
+export const addBookAsync : RequestHandler<{}, any, any> = async function (req, res, next) {
     try {        
         const newBook = await bookService.addBookAsync(req.body);
         return res.status(201).json({ message: "book created", data: newBook })
@@ -31,7 +33,7 @@ export const addBookAsync = async function (req, res, next) {
     }
 }
 
-export const deleteBookAsync = async function (req, res, next) {
+export const deleteBookAsync : RequestHandler<{id: string}> = async function (req, res, next) {
     try {
         const id = req.params.id;
         const result = await bookService.deleteBookAsync(id);
@@ -44,7 +46,7 @@ export const deleteBookAsync = async function (req, res, next) {
     }
 }
 
-export const updateBookAsync = async function (req, res, next) {
+export const updateBookAsync : RequestHandler<{id: string}, any, any> = async function (req, res, next) {
     try {
         const id = req.params.id;
         const updatedBook = await bookService.updateBookAsync(id, req.body);

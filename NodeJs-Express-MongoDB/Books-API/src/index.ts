@@ -8,7 +8,12 @@ import { errorHandler } from './middlewares/errorHandler.js'
 const PORT = 8000;
 const app = express();
 
-connectMongoDB(process.env.MongoDB_URL).then(() => console.log("MongoDB connected"));
+const mongoURL = process.env.MongoDB_URL;
+if (!mongoURL) {
+  throw new Error("MongoDB_URL is not defined in environment variables");
+}
+
+connectMongoDB(mongoURL).then(() => console.log("MongoDB connected"));
 
 // Middlewares (Plugins)
 app.use(express.json());
@@ -20,3 +25,5 @@ app.use('/authors', authorRouter);
 app.use(errorHandler)
 
 app.listen(PORT, () => console.log(`App is running on ${PORT}`));
+
+export {};

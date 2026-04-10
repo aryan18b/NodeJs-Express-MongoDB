@@ -1,6 +1,7 @@
 import * as authorService from '../services/author.service.js'
+import {type RequestHandler} from 'express';
 
-export const getAllAuthorsAsync = async (req, res, next) => {
+export const getAllAuthorsAsync: RequestHandler = async (req, res, next) => {
     try {
         const authors = await authorService.getAllAuthors();
         return res.json(authors);
