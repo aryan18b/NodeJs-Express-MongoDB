@@ -3,8 +3,10 @@ import { type RequestHandler } from 'express';
 
 export const getBooksAsync: RequestHandler = async function (req, res, next) {
     try {
-        const page = Number(req.query.page);
-        const limit = Number(req.query.limit);
+        const page = Math.max(1, Number(req.query.page) || 1);
+        let limit = Math.max(1, Number(req.query.limit) || 10);
+        if (limit > 100) limit = 100;
+
         const skip = (page - 1) * limit;
         const { books, totalItems } = await bookService.getBooksAsync(skip, limit);
         const totalPages = Math.ceil(totalItems/limit);
