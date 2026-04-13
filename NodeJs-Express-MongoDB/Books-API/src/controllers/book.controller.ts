@@ -26,7 +26,7 @@ export const getBookByIdAsync : RequestHandler<{id: string}> = async function (r
 
 export const addBookAsync : RequestHandler<{}, any, any> = async function (req, res, next) {
     try {        
-        const coverImage = req.file;
+        const coverImage = req.file;        
         const filename = coverImage?.filename;
         const bookData = {...req.body, coverImagePath: filename}
         const newBook = await bookService.addBookAsync(bookData);
