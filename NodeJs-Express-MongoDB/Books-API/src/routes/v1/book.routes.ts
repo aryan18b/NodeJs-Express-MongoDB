@@ -1,7 +1,7 @@
 import express from "express";
-import * as controller from "../controllers/book.controller.js";
-import { validateId, validateBody } from "../middlewares/validation.js";
-import { upload } from "../middlewares/multer.js";
+import * as controller from "../../controllers/book.controller.js";
+import { validateId, validateBody } from "../../middlewares/validation.js";
+import { upload } from "../../middlewares/multer.js";
 
 const router = express.Router();
 
