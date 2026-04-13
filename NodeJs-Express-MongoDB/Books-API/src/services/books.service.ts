@@ -52,10 +52,11 @@ export const getBookByIdAsync = async (id: string) => {
     return await Book.findById(id).populate('author');
 };
 
-export const addBookAsync = async (data: IBook) => {
+export const addBookAsync = async (data: Partial<IBook>) => {
     const newBook: IBook = new Book({
         title: data.title,
-        author: data.author
+        author: data.author,
+        coverImagePath: data.coverImagePath
     });
 
     const result = await Book.create(newBook);    

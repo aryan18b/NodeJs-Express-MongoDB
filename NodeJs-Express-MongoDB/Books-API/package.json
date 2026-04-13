@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node ./dist/index.js",
+    "start": "tsc && node ./dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Aryan B.",
@@ -12,11 +12,13 @@
   "description": "",
   "dependencies": {
     "express": "^5.2.1",
-    "mongoose": "^9.4.1"
+    "mongoose": "^9.4.1",
+    "multer": "^2.1.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/mongoose": "^5.11.96",
+    "@types/multer": "^2.1.0",
     "@types/node": "^25.5.2",
     "@types/typescript": "^0.4.29",
     "dotenv": "^17.4.1",

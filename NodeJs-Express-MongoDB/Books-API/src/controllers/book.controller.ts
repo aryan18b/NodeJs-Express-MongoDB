@@ -1,6 +1,6 @@
 import * as bookService from '../services/books.service.js'
 import {type RequestHandler } from 'express';
-import {type IBook } from '../models/book.model.js';
+// import {type IBook } from '../models/book.model.js';
 
 export const getAllBooksAsync : RequestHandler = async function (req, res, next) {
     try {
@@ -26,7 +26,11 @@ export const getBookByIdAsync : RequestHandler<{id: string}> = async function (r
 
 export const addBookAsync : RequestHandler<{}, any, any> = async function (req, res, next) {
     try {        
-        const newBook = await bookService.addBookAsync(req.body);
+        const coverImage = req.file;
+        const filename = coverImage?.filename;
+        const bookData = {...req.body, coverImagePath: filename}
+        const newBook = await bookService.addBookAsync(bookData);
+
         return res.status(201).json({ message: "book created", data: newBook })
     } catch (error) {
         next(error);
