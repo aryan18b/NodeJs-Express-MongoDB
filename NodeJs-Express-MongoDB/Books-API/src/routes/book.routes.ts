@@ -8,7 +8,7 @@ const router = express.Router();
 // Router-level Middleware
 router.use("/:id", validateId);
 
-router.get("/", controller.getAllBooksAsync);
+router.get("/", controller.getBooksAsync);
 
 router.get("/:id", controller.getBookByIdAsync);
 

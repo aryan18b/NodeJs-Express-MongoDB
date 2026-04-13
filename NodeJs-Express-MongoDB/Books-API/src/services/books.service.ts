@@ -44,8 +44,15 @@ exports.updateBook = (id, newBook) => {
 }
 */
 
-export const getAllBooksAsync = async () => {
-    return await Book.find().populate('author');
+export const getBooksAsync = async (skip: number, limit: number) => {
+    const [books, totalItems] = await Promise.all([
+    Book.find()
+    .skip(skip)
+    .limit(limit)
+    .populate('author'), 
+    Book.countDocuments()])
+
+    return {books, totalItems}
 };
 
 export const getBookByIdAsync = async (id: string) => {
