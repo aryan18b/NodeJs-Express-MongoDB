@@ -4,6 +4,8 @@ import { connectMongoDB } from './connection.js';
 import v1Router from './routes/v1/v1.routes.js'
 import { loggerMiddleware } from './middlewares/logger.js'
 import { errorHandler } from './middlewares/errorHandler.js'
+import rateLimiter from './middlewares/rateLimiter.js';
+
 const PORT = 8000;
 const app = express();
 
@@ -17,6 +19,7 @@ connectMongoDB(mongoURL).then(() => console.log("MongoDB connected"));
 // Middlewares (Plugins)
 app.use(express.json());
 app.use(loggerMiddleware);
+app.use(rateLimiter);
 
 app.use('/api/v1', v1Router);
 
