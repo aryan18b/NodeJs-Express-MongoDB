@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import {UserRoles} from '../utils/Enums.js'
 
-interface IUser{
+export interface IUser{
     name: string,
     email: string, 
     passwordHash: string,

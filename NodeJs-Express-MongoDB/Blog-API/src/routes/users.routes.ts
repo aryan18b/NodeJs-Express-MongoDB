@@ -1,9 +1,11 @@
 import express from 'express'
-
+import { userValidationScehma } from '../validation/user.validation.js';
+import { validate } from '../middlewares/validation.middleware.js';
+import * as controller from '../controllers/users.controller.js'
 const router = express.Router();
 
-router.use('/', (req, res) => {
-    res.send("This is a users route");
-})
+
+router.post('/', validate(userValidationScehma), controller.insertUser);
+
 
 export default router;

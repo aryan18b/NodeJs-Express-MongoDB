@@ -1,6 +1,6 @@
 import type { RequestHandler } from "express";
 import * as commentService from "../services/comments.service.js";
-import { ApiResponse } from "../utils/apiResponse.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 
 export const getComment: RequestHandler<{id: string}> = async (req, res, next) => {
   try {
