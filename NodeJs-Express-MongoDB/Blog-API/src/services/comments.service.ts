@@ -1,9 +1,10 @@
-import type { Types } from "mongoose";
 import Comment, {type IComment} from "../models/comment.model.js";
+import { ApiError } from "../utils/ApiError.js";
 
 export const getCommentById = async (id: string) => {
-    const result = await Comment.findById(id);
-    return result;
+    const comment = await Comment.findById(id).lean<IComment>();
+    if(!comment) throw new ApiError(404, "Comment not found");
+    return comment;
 }
 
 

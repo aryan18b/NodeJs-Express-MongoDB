@@ -1,9 +1,8 @@
 import express from 'express'
+import * as controller from '../controllers/comments.controller.js';
 
 const router = express.Router();
 
-router.use('/', (req, res) => {
-    res.send("This is a comments route");
-})
+router.use('/:id', controller.getComment)
 
 export default router;
