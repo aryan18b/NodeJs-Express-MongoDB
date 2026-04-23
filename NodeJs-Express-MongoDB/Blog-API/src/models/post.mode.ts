@@ -5,7 +5,6 @@ interface IPost{
     body:string,
     author: mongoose.Types.ObjectId,
     tags: [string],
-    createdAt: Date,
 }
 
 const postSchema = new mongoose.Schema<IPost>({
