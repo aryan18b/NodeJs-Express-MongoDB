@@ -2,9 +2,9 @@ import { type RequestHandler } from "express";
 import { type ObjectSchema } from "joi";
 import { ApiError } from "../utils/ApiError.js";
 
-export const validate = (schema: ObjectSchema) => {
+export const validate = (schema: ObjectSchema, property: "body" | "params" = "body") => {
     const func : RequestHandler = (req, res, next) => {
-        const { error, value } = schema.validate(req.body, {
+        const { error, value } = schema.validate(req[property], {
           abortEarly: false,
           stripUnknown: true
         });
@@ -14,7 +14,7 @@ export const validate = (schema: ObjectSchema) => {
           throw new ApiError(400, "Validation failed", errors)
         }
     
-        req.body = value;
+        req[property] = value;
         next();
     }
     return func;

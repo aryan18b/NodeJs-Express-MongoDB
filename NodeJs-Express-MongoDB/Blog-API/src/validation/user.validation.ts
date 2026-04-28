@@ -1,6 +1,6 @@
 import Joi from "joi";
 import { UserRoles } from "../utils/Enums.js";
-
+import { objectId } from "./common.validation.js";
 export const userValidationSchema = Joi.object({
   name: Joi.string()
     .pattern(/^[A-Za-z\s'-]+$/)
@@ -23,4 +23,8 @@ export const userValidationSchema = Joi.object({
   role: Joi.string()
     .valid(...Object.values(UserRoles))
     .optional(),
+});
+
+export const getUserByIdSchema = Joi.object({
+  id: objectId("user id").required()
 });
