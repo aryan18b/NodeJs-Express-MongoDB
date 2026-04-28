@@ -29,3 +29,15 @@ export const getUser : RequestHandler<{id: string}> = async (req, res, next) => 
         next(err)
     }
 }
+
+export const getAllUsers : RequestHandler = async (req, res, next) => {
+    try {
+        let message = "Users found";
+        const documents = await service.getAllUsers();
+        const users = documents.map(toUserResponse);
+        if(!users || users.length <= 0) message = "No users found"
+        return res.status(200).json(new ApiResponse(message, users));
+    } catch (err) {
+        next(err)
+    }
+}

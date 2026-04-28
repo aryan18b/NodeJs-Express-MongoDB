@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.post('/', validate(userValidationSchema), controller.insertUser);
 
+router.get('/', controller.getAllUsers)
+
 router.get('/:id',  validate(getUserByIdSchema, "params"), controller.getUser);
 
 export default router;

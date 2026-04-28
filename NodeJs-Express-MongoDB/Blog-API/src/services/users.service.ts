@@ -17,3 +17,8 @@ export const getUser = async (id: string) : Promise<HydratedDocument<IUser> | nu
   const document = await User.findById(id);
   return document;
 };
+
+export const getAllUsers = async() : Promise<Array<HydratedDocument<IUser>>> => {
+  const result = await User.find({});
+  return result;
+}
