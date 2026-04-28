@@ -1,14 +1,13 @@
+import type { CreateUserDto } from "../dtos/user.dto.js";
 import User, { type IUser } from "../models/user.model.js";
 
-export const insertUser = async (data: any) => {
+export const insertUser = async (data: CreateUserDto) => {
   const { password, ...rest } = data;
 
-  const passwordHash = password;
-
-  const user: IUser = await User.create({
+  const document = await User.create({
     ...rest,
-    passwordHash,
+    passwordHash: password,
   });
-  const result = await User.create(user);
-  return result;
+
+  return document;
 };

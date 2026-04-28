@@ -1,15 +1,15 @@
 import Joi from "joi";
 import { UserRoles } from "../utils/Enums.js";
 
-export const userValidationScehma = Joi.object({
+export const userValidationSchema = Joi.object({
   name: Joi.string()
     .pattern(/^[A-Za-z\s'-]+$/)
-    .min(3)
+    .min(2)
     .max(30)
     .required()
     .messages({
       "string.empty": "name cannot be empty",
-      "string.min": "name must be at least 3 characters",
+      "string.min": "name must be at least 2 characters",
       "string.pattern.base": "name must only contain letters",
     }),
   email: Joi.string().email().required().messages({
