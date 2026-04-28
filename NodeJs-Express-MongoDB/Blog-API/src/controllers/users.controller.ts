@@ -2,22 +2,30 @@ import type { RequestHandler } from "express"
 import * as service from "../services/users.service.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 import type { CreateUserDto, UserResponseDto } from "../dtos/user.dto.js";
+import { ApiError } from "../utils/ApiError.js";
+import { toUserResponse } from "../mappers/user.mapper.js";
 
 export const insertUser : RequestHandler = async (req, res, next) => {
     try {
         const body : CreateUserDto = req.body;        
-        const document = await service.insertUser(body);
-        
-        const obj = document.toObject();
-        const user : UserResponseDto = {
-            id: obj._id.toString(),
-            name: obj.name,
-            email: obj.email,
-            role: obj.role
-        };
+        const document = await service.insertUser(body);        
+        const user = toUserResponse(document);
 
         return res.status(201).json(new ApiResponse("User Created", user));
     } catch (err) {
         next(err);
+    }
+}
+
+export const getUser : RequestHandler<{id: string}> = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        const document = await service.getUser(id);
+        if(!document) throw new ApiError(404, `User with id: ${id} not found.`);
+        const user = toUserResponse(document);
+        
+        return res.status(200).json(new ApiResponse("User found", user));
+    } catch (err) {
+        next(err)
     }
 }
