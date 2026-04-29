@@ -1,9 +1,10 @@
 import express from 'express'
+import { validate } from '../middlewares/validation.middleware.js';
+import { postValidationSchema } from '../validation/post.validation.js';
+import * as controller from '../controllers/posts.controller.js';
 
 const router = express.Router();
 
-router.use('/', (req, res) => {
-    res.send("This is a posts route");
-})
+router.post('/', validate(postValidationSchema), controller.createPost)
 
 export default router;
