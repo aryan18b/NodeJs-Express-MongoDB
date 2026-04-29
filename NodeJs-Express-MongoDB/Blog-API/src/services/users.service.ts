@@ -1,6 +1,7 @@
-import type { HydratedDocument } from "mongoose";
+import type { HydratedDocument, QueryFilter } from "mongoose";
 import type { CreateUserDto } from "../dtos/user.dto.js";
 import User, { type IUser } from "../models/user.model.js";
+import type { UsersQueryParams } from "../types/user.types.js";
 
 export const insertUser = async (data: CreateUserDto) : Promise<HydratedDocument<IUser>> => {
   const { password, ...rest } = data;
@@ -28,13 +29,21 @@ export const deleteUser = async (id: string) => {
   return result;  
 }
 
-export const getAllUsers = async(skip: number, limit: number) : Promise<{ documents: Array<HydratedDocument<IUser>>; totalItems: number }> => {
+export const getUsers = async(query: UsersQueryParams) : Promise<{ documents: Array<HydratedDocument<IUser>>; totalItems: number}> => {
+  const filter: QueryFilter<IUser> = {};
+
+  const limit = query.limit;
+  const page = query.page;
+  const skip = limit*(page-1);
+
+  if(query.role) filter.role = query.role;
+
   const [documents, totalItems] = await Promise.all([
-    User.find()
+    User.find(filter)
     .skip(skip)
     .limit(limit)
     .sort({createdAt: -1}),
-    User.countDocuments()]);
+    User.countDocuments(filter)]);
 
-    return {documents, totalItems};
+  return {documents, totalItems};
 }

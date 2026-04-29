@@ -6,13 +6,14 @@ export const userValidationSchema = Joi.object({
     .pattern(/^[A-Za-z\s'-]+$/)
     .min(2)
     .max(30)
+    .trim()
     .required()
     .messages({
       "string.empty": "name cannot be empty",
       "string.min": "name must be at least 2 characters",
       "string.pattern.base": "name must only contain letters",
     }),
-  email: Joi.string().email().required().messages({
+  email: Joi.string().trim().email().required().messages({
     "string.email": "Invalid email format",
     "string.empty": "email cannot be empty",
   }),
@@ -21,15 +22,20 @@ export const userValidationSchema = Joi.object({
     "string.empty": "Password is required",
   }),
   role: Joi.string()
+    .trim()
     .valid(...Object.values(UserRoles))
     .optional(),
 });
 
 export const userIdSchema = Joi.object({
-  id: objectId("user id").required()
+  id: objectId("user id").required(),
 });
 
-export const getAllUsersQuerySchema = Joi.object({
+export const usersQuerySchema = Joi.object({
   limit: Joi.number().integer().min(1).max(50).default(10),
-  page: Joi.number().integer().min(1).default(1)
-})
+  page: Joi.number().integer().min(1).default(1),
+  role: Joi.string()
+    .trim()
+    .valid(...Object.values(UserRoles))
+    .optional(),
+});

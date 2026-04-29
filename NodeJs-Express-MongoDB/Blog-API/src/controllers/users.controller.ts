@@ -4,7 +4,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import type { CreateUserDto, UserResponseDto } from "../dtos/user.dto.js";
 import { ApiError } from "../utils/ApiError.js";
 import { toUserResponse } from "../mappers/user.mapper.js";
-import type { PaginationQueryParams } from "../types/pagination.types.js";
+import type { UsersQueryParams } from "../types/user.types.js";
 
 export const insertUser : RequestHandler = async (req, res, next) => {
     try {
@@ -58,26 +58,20 @@ export const updateUser : RequestHandler = async (req, res, next) =>{
     }
 }
 
-export const getAllUsers : RequestHandler = async (req, res, next) => {
+export const getUsers : RequestHandler = async (req, res, next) => {
     try {
-        let message = "Users found";
-        
-        const { page, limit } = (req as any).validated.query as PaginationQueryParams;
-        const skip = limit*(page-1);
-
-        const {documents, totalItems} = await service.getAllUsers(skip, limit);
+        const queryParams = (req as any).validated.query as UsersQueryParams;
+        const {documents, totalItems} = await service.getUsers(queryParams);
         const users : UserResponseDto[] = documents.map(toUserResponse);
-        if(!users || users.length <= 0) message = "No users found"
-        const totalPages = Math.ceil(totalItems/limit)
-
+        
         const meta = {
-            page,
-            limit, 
+            page: queryParams.page,
+            limit: queryParams.limit, 
             totalItems,
-            totalPages
+            totalPages: Math.ceil(totalItems/queryParams.limit)
         }
 
-        return res.status(200).json(new ApiResponse(message, users, meta));
+        return res.status(200).json(new ApiResponse("Users fetched", users, meta));
     } catch (err) {
         next(err)
     }
