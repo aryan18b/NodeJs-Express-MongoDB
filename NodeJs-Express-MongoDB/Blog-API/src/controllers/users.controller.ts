@@ -38,10 +38,19 @@ export const getAllUsers : RequestHandler = async (req, res, next) => {
         const { page, limit } = (req as any).validated.query as PaginationQueryParams;
         const skip = limit*(page-1);
 
-        const documents = await service.getAllUsers(skip, limit);
+        const {documents, totalItems} = await service.getAllUsers(skip, limit);
         const users = documents.map(toUserResponse);
         if(!users || users.length <= 0) message = "No users found"
-        return res.status(200).json(new ApiResponse(message, users));
+        const totalPages = Math.ceil(totalItems/limit)
+
+        const meta = {
+            page,
+            limit, 
+            totalItems,
+            totalPages
+        }
+
+        return res.status(200).json(new ApiResponse(message, users, meta));
     } catch (err) {
         next(err)
     }

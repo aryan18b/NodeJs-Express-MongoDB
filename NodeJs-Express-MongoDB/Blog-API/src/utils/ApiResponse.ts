@@ -1,11 +1,13 @@
-export class ApiResponse<T> {
+export class ApiResponse<T, U> {
 
     success = true;
     message: string;
+    meta: U | undefined;
     data: T
 
-    constructor(message: string, data: T){
+    constructor(message: string, data: T, meta?: U){
         this.message = message
         this.data = data
+        this.meta = meta
     }
 }
