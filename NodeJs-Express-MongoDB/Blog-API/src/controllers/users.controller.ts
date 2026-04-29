@@ -31,6 +31,19 @@ export const getUser : RequestHandler<{id: string}> = async (req, res, next) => 
     }
 }
 
+export const deleteUser : RequestHandler<{id: string}> = async (req, res, next) => {
+    try {
+        const id = (req as any).validated.params.id;
+        const document = await service.deleteUser(id);
+        if(!document) throw new ApiError(404, `User with id: ${id} not found.`);
+        const user = toUserResponse(document);
+
+        return res.status(200).json(new ApiResponse("User deleted", user));
+    } catch (err) {
+        next(err)
+    }
+}
+
 export const getAllUsers : RequestHandler = async (req, res, next) => {
     try {
         let message = "Users found";

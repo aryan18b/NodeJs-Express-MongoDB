@@ -19,6 +19,11 @@ export const getUser = async (id: string) : Promise<HydratedDocument<IUser> | nu
   return document;
 };
 
+export const deleteUser = async (id: string) => {
+  const result = await User.findByIdAndDelete(id);
+  return result;  
+}
+
 export const getAllUsers = async(skip: number, limit: number) : Promise<{ documents: Array<HydratedDocument<IUser>>; totalItems: number }> => {
   const [documents, totalItems] = await Promise.all([
     User.find()

@@ -25,7 +25,7 @@ export const userValidationSchema = Joi.object({
     .optional(),
 });
 
-export const getUserByIdSchema = Joi.object({
+export const userIdSchema = Joi.object({
   id: objectId("user id").required()
 });
 
