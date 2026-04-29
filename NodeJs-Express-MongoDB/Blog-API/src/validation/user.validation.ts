@@ -28,3 +28,8 @@ export const userValidationSchema = Joi.object({
 export const getUserByIdSchema = Joi.object({
   id: objectId("user id").required()
 });
+
+export const getAllUsersQuerySchema = Joi.object({
+  limit: Joi.number().integer().min(1).max(50).default(10),
+  page: Joi.number().integer().min(1).default(1)
+})

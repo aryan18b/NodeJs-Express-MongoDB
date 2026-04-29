@@ -18,7 +18,7 @@ export const getUser = async (id: string) : Promise<HydratedDocument<IUser> | nu
   return document;
 };
 
-export const getAllUsers = async() : Promise<Array<HydratedDocument<IUser>>> => {
-  const result = await User.find({});
+export const getAllUsers = async(skip: number, limit: number) : Promise<Array<HydratedDocument<IUser>>> => {
+  const result = await User.find().skip(skip).limit(limit).sort({createdAt: -1});
   return result;
 }
