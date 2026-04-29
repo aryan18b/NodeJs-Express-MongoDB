@@ -13,4 +13,6 @@ router.get('/:id',  validate(userIdSchema, "params"), controller.getUser);
 
 router.delete('/:id', validate(userIdSchema, "params"), controller.deleteUser)
 
+router.put('/:id', validate(userIdSchema, "params"), validate(userValidationSchema), controller.updateUser)
+
 export default router;

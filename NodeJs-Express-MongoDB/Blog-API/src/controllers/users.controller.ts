@@ -10,7 +10,7 @@ export const insertUser : RequestHandler = async (req, res, next) => {
     try {
         const body : CreateUserDto = (req as any).validated.body;        
         const document = await service.insertUser(body);        
-        const user = toUserResponse(document);
+        const user : UserResponseDto = toUserResponse(document);
 
         return res.status(201).json(new ApiResponse("User Created", user));
     } catch (err) {
@@ -18,12 +18,12 @@ export const insertUser : RequestHandler = async (req, res, next) => {
     }
 }
 
-export const getUser : RequestHandler<{id: string}> = async (req, res, next) => {
+export const getUser : RequestHandler = async (req, res, next) => {
     try {
         const id = (req as any).validated.params.id;
         const document = await service.getUser(id);
-        if(!document) throw new ApiError(404, `User with id: ${id} not found.`);
-        const user = toUserResponse(document);
+        if(!document) throw new ApiError(404, `User with id: ${id} does not exist.`);
+        const user : UserResponseDto = toUserResponse(document);
         
         return res.status(200).json(new ApiResponse("User found", user));
     } catch (err) {
@@ -31,16 +31,30 @@ export const getUser : RequestHandler<{id: string}> = async (req, res, next) => 
     }
 }
 
-export const deleteUser : RequestHandler<{id: string}> = async (req, res, next) => {
+export const deleteUser : RequestHandler = async (req, res, next) => {
     try {
         const id = (req as any).validated.params.id;
         const document = await service.deleteUser(id);
-        if(!document) throw new ApiError(404, `User with id: ${id} not found.`);
-        const user = toUserResponse(document);
+        if(!document) throw new ApiError(404, `User with id: ${id} does not exist.`);
+        const user : UserResponseDto = toUserResponse(document);
 
         return res.status(200).json(new ApiResponse("User deleted", user));
     } catch (err) {
         next(err)
+    }
+}
+
+export const updateUser : RequestHandler = async (req, res, next) =>{
+    try {        
+        const id = (req as any).validated.params.id;
+        const body : CreateUserDto = (req as any).validated.body;
+        const document = await service.updateUser(id, body);
+        if(!document) throw new ApiError(404, `User with id: ${id} does not exist.`);
+        const user : UserResponseDto = toUserResponse(document);
+
+        return res.status(200).json(new ApiResponse("User updated", user));
+    } catch (err) {
+        next(err);
     }
 }
 
@@ -52,7 +66,7 @@ export const getAllUsers : RequestHandler = async (req, res, next) => {
         const skip = limit*(page-1);
 
         const {documents, totalItems} = await service.getAllUsers(skip, limit);
-        const users = documents.map(toUserResponse);
+        const users : UserResponseDto[] = documents.map(toUserResponse);
         if(!users || users.length <= 0) message = "No users found"
         const totalPages = Math.ceil(totalItems/limit)
 

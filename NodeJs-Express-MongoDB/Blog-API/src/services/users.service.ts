@@ -1,7 +1,6 @@
 import type { HydratedDocument } from "mongoose";
 import type { CreateUserDto } from "../dtos/user.dto.js";
 import User, { type IUser } from "../models/user.model.js";
-import { totalmem } from "node:os";
 
 export const insertUser = async (data: CreateUserDto) : Promise<HydratedDocument<IUser>> => {
   const { password, ...rest } = data;
@@ -16,6 +15,11 @@ export const insertUser = async (data: CreateUserDto) : Promise<HydratedDocument
 
 export const getUser = async (id: string) : Promise<HydratedDocument<IUser> | null> => {
   const document = await User.findById(id);
+  return document;
+};
+
+export const updateUser = async (id: string, data: CreateUserDto) : Promise<HydratedDocument<IUser> | null> => {
+  const document = await User.findByIdAndUpdate(id, data, {returnDocument: 'after'});  
   return document;
 };
 
