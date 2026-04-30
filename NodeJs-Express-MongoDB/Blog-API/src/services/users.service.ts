@@ -2,6 +2,7 @@ import type { HydratedDocument, QueryFilter } from "mongoose";
 import type { CreateUserDto } from "../dtos/user.dto.js";
 import User, { type IUser } from "../models/user.model.js";
 import type { UsersQueryParams } from "../types/user.types.js";
+import { ApiError } from "../utils/ApiError.js";
 
 export const insertUser = async (data: CreateUserDto) : Promise<HydratedDocument<IUser>> => {
   const { password, ...rest } = data;
@@ -20,8 +21,20 @@ export const getUser = async (id: string) : Promise<HydratedDocument<IUser> | nu
 };
 
 export const updateUser = async (id: string, data: CreateUserDto) : Promise<HydratedDocument<IUser> | null> => {
-  const document = await User.findByIdAndUpdate(id, data, {returnDocument: 'after'});  
-  return document;
+  const user = await User.findById(id);
+  if (!user) return null;
+
+  if (data.email !== user.email) {
+    const exists = await User.findOne({ email: data.email, _id: { $ne: id } });
+    if (exists) {
+      throw new ApiError(409, `Email: ${data.email} is already in use.`);
+    }
+  }
+
+  Object.assign(user, data);
+  await user.save();
+
+  return user;
 };
 
 export const deleteUser = async (id: string) => {

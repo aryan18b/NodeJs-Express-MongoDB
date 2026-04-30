@@ -4,7 +4,7 @@ export interface CreateUserDto {
     name: string,
     email: string, 
     password: string,
-    role?: string
+    role?: UserRoles
 }
 
 export interface UserResponseDto{
