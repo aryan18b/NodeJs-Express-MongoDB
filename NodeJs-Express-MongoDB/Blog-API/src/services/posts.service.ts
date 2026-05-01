@@ -31,3 +31,9 @@ export const getPost = async (id: string) : Promise<HydratedDocument<IPost> | nu
   await document?.populate('author', 'name');
   return document;
 };
+
+export const deletePost = async (id: string) : Promise<HydratedDocument<IPost> | null> => {
+  const document = await Post.findByIdAndDelete(id);
+  await document?.populate('author', 'name');
+  return document;
+};

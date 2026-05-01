@@ -11,4 +11,6 @@ router.get('/', validate(postsQueryValidationSchema, "query"), controller.getPos
 
 router.get('/:id', validate(postIdValidationSchema, "params"), controller.getPost)
 
+router.delete('/:id', validate(postIdValidationSchema, "params"), controller.deletePost)
+
 export default router;
