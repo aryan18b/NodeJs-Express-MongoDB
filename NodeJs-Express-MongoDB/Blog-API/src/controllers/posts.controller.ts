@@ -5,6 +5,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { toPostResponse } from "../mappers/post.mapper.js";
 import type { PaginationQueryParams } from "../types/common.types.js";
 import { ApiError } from "../utils/ApiError.js";
+import type { PostsQueryParams } from "../types/post.types.js";
 
 export const createPost : RequestHandler = async (req, res, next) => {
     try {
@@ -20,7 +21,7 @@ export const createPost : RequestHandler = async (req, res, next) => {
 
 export const getPosts: RequestHandler = async (req, res, next) => {
     try {
-        const queryParams = (req as any).validated.query as PaginationQueryParams;
+        const queryParams = (req as any).validated.query as PostsQueryParams;
         const {documents, totalItems} = await service.getPosts(queryParams);
         const posts: PostResponseDto[] = documents.map(toPostResponse)
 

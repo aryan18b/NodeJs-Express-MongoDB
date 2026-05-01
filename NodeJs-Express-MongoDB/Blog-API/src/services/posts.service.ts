@@ -1,7 +1,7 @@
 import type { HydratedDocument, QueryFilter } from "mongoose";
 import type { CreatePostDto } from "../dtos/post.dto.js";
 import Post, { type IPost } from "../models/post.model.js";
-import type { PaginationQueryParams } from "../types/common.types.js";
+import type { PostsQueryParams } from "../types/post.types.js";
 
 export const createPost = async (data: CreatePostDto) : Promise<HydratedDocument<IPost>> => {
     const document = await Post.create(data);
@@ -9,18 +9,23 @@ export const createPost = async (data: CreatePostDto) : Promise<HydratedDocument
     return document;
 }
 
-export const getPosts = async(query: PaginationQueryParams) : Promise<{documents: Array<HydratedDocument<IPost>>; totalItems: number}> => {
+export const getPosts = async(query: PostsQueryParams) : Promise<{documents: Array<HydratedDocument<IPost>>; totalItems: number}> => {
+    const filter : QueryFilter<IPost> = {};
+
+    if(query.author) filter.author = query.author
+    if(query.tags?.length) filter.tags = {$in: query.tags}
+    
     const limit = query.limit;
     const page = query.page;
     const skip = limit*(page-1);
 
     const [documents, totalItems] = await Promise.all([
-        Post.find()
+        Post.find(filter)
         .skip(skip)
         .limit(limit)
         .populate('author', 'name')
         .sort({createdAt: -1}),
-        Post.countDocuments()
+        Post.countDocuments(filter)
     ])
 
     return {documents, totalItems};

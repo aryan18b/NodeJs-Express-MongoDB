@@ -10,7 +10,16 @@ export const postValidationSchema = Joi.object({
 
 export const postsQueryValidationSchema = Joi.object({
     limit: pagination_limit(),
-    page: pagination_page()
+    page: pagination_page(),
+    author: objectId("author id"),
+    tags: Joi.string().custom((value, helpers) => {
+        if(!value) return value;
+
+        return value
+                .split(',')
+                .map((tag: string) => tag.trim())
+                .filter(Boolean);
+    })
 })
 
 export const postIdValidationSchema = Joi.object({
