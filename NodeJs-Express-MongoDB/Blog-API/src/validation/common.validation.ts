@@ -12,3 +12,6 @@ export const objectId = (fieldname = "id") =>
     .messages({
         "any.invalid": `Invalid ${fieldname}`
     })
+
+export const pagination_page = () => Joi.number().integer().min(1).default(1);
+export const pagination_limit = () => Joi.number().integer().min(1).max(50).default(10);
