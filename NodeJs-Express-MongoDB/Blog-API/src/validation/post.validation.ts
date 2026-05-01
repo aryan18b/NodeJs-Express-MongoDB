@@ -12,3 +12,7 @@ export const postsQueryValidationSchema = Joi.object({
     limit: pagination_limit(),
     page: pagination_page()
 })
+
+export const postIdValidationSchema = Joi.object({
+    id: objectId("post id").required()
+})

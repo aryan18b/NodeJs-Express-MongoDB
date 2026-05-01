@@ -36,3 +36,16 @@ export const getPosts: RequestHandler = async (req, res, next) => {
         next(err)
     }
 }
+
+export const getPost: RequestHandler = async (req, res, next) => {
+    try {
+        const id = (req as any).validated.params.id;
+        const document = await service.getPost(id);
+        if(!document) throw new ApiError(404, `Post with id: ${id} does not exist.`);
+        const user : PostResponseDto = toPostResponse(document);
+
+        return res.status(200).json(new ApiResponse("User found", user));
+    } catch (err) {
+        next(err)
+    }
+}

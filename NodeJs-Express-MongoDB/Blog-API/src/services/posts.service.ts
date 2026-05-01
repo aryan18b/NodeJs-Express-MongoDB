@@ -25,3 +25,9 @@ export const getPosts = async(query: PaginationQueryParams) : Promise<{documents
 
     return {documents, totalItems};
 }
+
+export const getPost = async (id: string) : Promise<HydratedDocument<IPost> | null> => {
+  const document = await Post.findById(id);
+  await document?.populate('author', 'name');
+  return document;
+};
