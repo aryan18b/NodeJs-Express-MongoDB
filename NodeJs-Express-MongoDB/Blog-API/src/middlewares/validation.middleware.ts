@@ -4,7 +4,7 @@ import { ApiError } from "../utils/ApiError.js";
 
 export const validate = (schema: ObjectSchema, property: "body" | "params" | "query" = "body") => {
     const func : RequestHandler = (req, res, next) => {
-        const { error, value } = schema.validate(req[property], {
+        const { error, value } = schema.validate(req[property] ?? {}, {
           abortEarly: false,
           stripUnknown: true
         });

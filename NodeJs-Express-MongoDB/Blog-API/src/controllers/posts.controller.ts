@@ -1,5 +1,5 @@
 import type { RequestHandler } from "express";
-import type { CreatePostDto, PostResponseDto, PostWithAuthor } from "../dtos/post.dto.js";
+import type { CreatePostDto, PostResponseDto, PostWithAuthor, UpdatePostDto } from "../dtos/post.dto.js";
 import * as service from "../services/posts.service.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { toPostResponse } from "../mappers/post.mapper.js";
@@ -43,9 +43,9 @@ export const getPost: RequestHandler = async (req, res, next) => {
         const id = (req as any).validated.params.id;
         const document = await service.getPost(id);
         if(!document) throw new ApiError(404, `Post with id: ${id} does not exist.`);
-        const user : PostResponseDto = toPostResponse(document);
+        const post : PostResponseDto = toPostResponse(document);
 
-        return res.status(200).json(new ApiResponse("Post found", user));
+        return res.status(200).json(new ApiResponse("Post found", post));
     } catch (err) {
         next(err)
     }
@@ -56,9 +56,23 @@ export const deletePost: RequestHandler = async (req, res, next) => {
         const id = (req as any).validated.params.id;
         const document = await service.deletePost(id);
         if(!document) throw new ApiError(404, `Post with id: ${id} does not exist.`);
-        const user : PostResponseDto = toPostResponse(document);
+        const post : PostResponseDto = toPostResponse(document);
 
-        return res.status(200).json(new ApiResponse("Post deleted", user));
+        return res.status(200).json(new ApiResponse("Post deleted", post));
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const updatePost: RequestHandler = async (req, res, next) => {
+    try {
+        const id = (req as any).validated.params.id;
+        const body: UpdatePostDto = (req as any).validated.body;
+        const document = await service.updatePost(id, body);
+        if(!document) throw new ApiError(404, `Post with id: ${id} does not exist.`);
+        const post : PostResponseDto = toPostResponse(document);
+        
+        return res.status(200).json(new ApiResponse("Post updated", post));
     } catch (err) {
         next(err)
     }

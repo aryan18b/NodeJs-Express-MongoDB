@@ -9,6 +9,12 @@ export type CreatePostDto = {
     tags?: string[]
 }
 
+export type UpdatePostDto = {
+    title: string,
+    body: string,
+    tags?: string[]
+}
+
 export type PostWithAuthor = Omit<IPost, 'author'> & {
     _id: mongoose.Types.ObjectId;
     author: PostAuthor;

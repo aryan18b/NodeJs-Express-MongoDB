@@ -1,16 +1,18 @@
 import express from 'express'
 import { validate } from '../middlewares/validation.middleware.js';
-import { postIdValidationSchema, postsQueryValidationSchema, postValidationSchema } from '../validation/post.validation.js';
+import * as schema from '../validation/post.validation.js';
 import * as controller from '../controllers/posts.controller.js';
 
 const router = express.Router();
 
-router.post('/', validate(postValidationSchema), controller.createPost)
+router.post('/', validate(schema.createPostValidationSchema), controller.createPost)
 
-router.get('/', validate(postsQueryValidationSchema, "query"), controller.getPosts)
+router.get('/', validate(schema.postsQueryValidationSchema, "query"), controller.getPosts)
 
-router.get('/:id', validate(postIdValidationSchema, "params"), controller.getPost)
+router.get('/:id', validate(schema.postIdValidationSchema, "params"), controller.getPost)
 
-router.delete('/:id', validate(postIdValidationSchema, "params"), controller.deletePost)
+router.delete('/:id', validate(schema.postIdValidationSchema, "params"), controller.deletePost)
+
+router.put('/:id', validate(schema.postIdValidationSchema, "params"), validate(schema.updatePostValidationSchema), controller.updatePost)
 
 export default router;

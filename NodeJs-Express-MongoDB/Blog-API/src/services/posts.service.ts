@@ -1,5 +1,5 @@
 import type { HydratedDocument, QueryFilter } from "mongoose";
-import type { CreatePostDto } from "../dtos/post.dto.js";
+import type { CreatePostDto, UpdatePostDto } from "../dtos/post.dto.js";
 import Post, { type IPost } from "../models/post.model.js";
 import type { PostsQueryParams } from "../types/post.types.js";
 
@@ -42,3 +42,9 @@ export const deletePost = async (id: string) : Promise<HydratedDocument<IPost> |
   await document?.populate('author', 'name');
   return document;
 };
+
+export const updatePost = async(id: string, data: UpdatePostDto): Promise<HydratedDocument<IPost> | null> => {
+  const document = await Post.findByIdAndUpdate(id, data, {returnDocument: 'after'});
+  await document?.populate('author', 'name');
+  return document;
+}
