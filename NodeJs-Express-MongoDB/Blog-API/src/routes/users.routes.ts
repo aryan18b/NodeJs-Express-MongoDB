@@ -11,6 +11,8 @@ router.get('/', validate(usersQuerySchema, "query"), controller.getUsers);
 
 router.get('/:id',  validate(userIdSchema, "params"), controller.getUser);
 
+router.get('/:id/posts',  validate(userIdSchema, "params"), validate(usersQuerySchema, "query"), controller.getUserPosts);
+
 router.delete('/:id', validate(userIdSchema, "params"), controller.deleteUser);
 
 router.put('/:id', validate(userIdSchema, "params"), validate(userValidationSchema), controller.updateUser);
