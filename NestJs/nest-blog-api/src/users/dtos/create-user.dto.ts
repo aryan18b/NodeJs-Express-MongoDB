@@ -1,13 +1,18 @@
-export class CreateUserDto {
-    name: string;
-    email: string;
-    password: string;
-    role: string;
+import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
 
-    constructor(name: string, email: string, password: string, role: string = "user"){
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
+export class CreateUserDto {
+  @IsString()
+  @MinLength(2)
+  name!: string;
+
+  @IsEmail()
+  email!: string;
+
+  @IsString()
+  @MinLength(6)
+  password!: string;
+
+  @IsString()
+  @IsOptional()
+  role: string = 'user';
 }
