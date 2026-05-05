@@ -25,18 +25,18 @@ export class UsersController {
   }
 
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number) {
+  async findOne(@Param('id') id: any) {
     return await this.usersService.findOne(id);
   }
 
   @Delete(':id')
-  async deleteOne(@Param('id', ParseIntPipe) id: number) {
+  async deleteOne(@Param('id') id: any) {
     return await this.usersService.deleteOne(id);
   }
 
   @Put(':id')
   async updateOne(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: any,
     @Body() updateUserDto: CreateUserDto,
   ) {
     return await this.usersService.updateOne(id, updateUserDto);
