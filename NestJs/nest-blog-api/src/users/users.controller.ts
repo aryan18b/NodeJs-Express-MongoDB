@@ -7,9 +7,13 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  UseFilters,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dtos/create-user.dto';
+import { NotFoundExceptionFilter } from './filters/not-found.filter';
+
+@UseFilters(NotFoundExceptionFilter)
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
