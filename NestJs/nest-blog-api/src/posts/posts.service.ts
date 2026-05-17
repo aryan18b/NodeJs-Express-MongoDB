@@ -26,7 +26,7 @@ export class PostsService{
 
     async create(post: CreatePostDto) : Promise<Post> {
 
-        const userExists = await this.usersService.findOne(new Types.ObjectId(post.author));
+        const userExists = await this.usersService.findOneById(new Types.ObjectId(post.author));
 
         if(!userExists) throw new BadRequestException();
 

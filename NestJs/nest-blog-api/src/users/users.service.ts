@@ -65,8 +65,12 @@ export class UsersService {
         return await this.userModel.find(filter);
     }
 
-    async findOne(id: Types.ObjectId) : Promise<User | null | undefined>{
+    async findOneById(id: Types.ObjectId) : Promise<User | null | undefined>{
         return await this.userModel.findById(id);
+    }
+
+    async findOne(username: string){
+        return await this.userModel.findOne({email: username}).select('+password').lean();
     }
 
     async deleteOne(id: Types.ObjectId){
