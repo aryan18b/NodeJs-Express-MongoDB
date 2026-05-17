@@ -3,7 +3,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './users.schema';
-import { Model } from 'mongoose';
+import { Model, QueryFilter, Types } from 'mongoose';
+import { QueryUsersDto } from './dtos/query-users.dto';
 
 
 @Injectable()
@@ -56,31 +57,23 @@ export class UsersService {
         return await user.save();
     }
 
-    async findAll(): Promise<User[]> {
-        return await this.userModel.find();
+    async findAll(query: QueryUsersDto): Promise<User[]> {
+        const filter: QueryFilter<User> = {};
+
+        if(query.role) filter.role = query.role;
+
+        return await this.userModel.find(filter);
     }
 
-    async findOne(id: any) : Promise<User | undefined>{
-        const user = await this.userModel.findById(id);
-        if (!user) {
-            throw new NotFoundException(`User with id ${id} not found`);
-        }
-        return user;
+    async findOne(id: Types.ObjectId) : Promise<User | null | undefined>{
+        return await this.userModel.findById(id);
     }
 
-    async deleteOne(id: any){
-        const user = await this.userModel.findByIdAndDelete(id);
-        if (!user) {
-            throw new NotFoundException(`User with id ${id} not found`);
-        }
-        return user;
+    async deleteOne(id: Types.ObjectId){
+        return await this.userModel.findByIdAndDelete(id);
     }
 
-    async updateOne(id: number, updateUserDto: CreateUserDto) : Promise<User | undefined>{
-        const user = await this.userModel.findByIdAndUpdate(id, updateUserDto, {returnDocument: 'after'});
-        if (!user) {
-            throw new NotFoundException(`User with id ${id} not found`);
-        }
-        return user;
+    async updateOne(id: Types.ObjectId, updateUserDto: CreateUserDto) : Promise<User | null | undefined>{
+        return await this.userModel.findByIdAndUpdate(id, updateUserDto, {returnDocument: 'after'});
     }
 }
